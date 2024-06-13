@@ -1,29 +1,37 @@
 "use client";
 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
-export default function Form({ categories }) {
+export default function Form({ data, categories }) {
   const token = Cookies.get("currentUser");
   const router = useRouter();
 
+  console.log(data);
+
   const [isLoading, setIsLoading] = useState(false);
-  const [form, setForm] = useState({
-    title: "",
-    price: 0,
-    description: "",
-    category_id: "",
-    company: "",
-    stock: 0,
-    shipping: false,
-    featured: false,
-    colors: ["#ffffff"],
-    images: [],
-  });
+  const [form, setForm] = useState(
+    data
+      ? data
+      : {
+          title: "",
+          price: 0,
+          description: "",
+          category_id: "",
+          company: "",
+          stock: 0,
+          shipping: false,
+          featured: false,
+          colors: ["#ffffff"],
+          images: [],
+        },
+  );
+
+  console.log(data);
 
   function handleOnChange(e) {
     console.log(e.target.name);
@@ -53,23 +61,44 @@ export default function Form({ categories }) {
     };
 
     try {
-      const response = await axios.post(
-        "/api/products",
-        {
-          ...form,
-          // featured: JSON.parse(form.featured),
-          shipping: JSON.parse(form.shipping),
-        },
-        {
-          headers: {
-            Authorization: token,
+      if (data) {
+        const response = await axios.patch(
+          `/api/products/${data.id}`,
+          {
+            ...form,
+            price: Number(form.price),
+            stock: Number(form.stock),
+            // featured: JSON.parse(form.featured),
+            shipping: JSON.parse(form.shipping),
           },
-        },
-      );
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+      } else {
+        const response = await axios.post(
+          "/api/products",
+          {
+            ...form,
+            price: Number(form.price),
+            stock: Number(form.stock),
+            // featured: JSON.parse(form.featured),
+            shipping: JSON.parse(form.shipping),
+          },
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+      }
 
       router.push("/product");
       router.refresh();
     } catch (error) {
+      console.log(error);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -83,6 +112,7 @@ export default function Form({ categories }) {
   async function handleImages(e) {
     setIsLoading(true);
     const files = Array.from(e.target.files);
+    console.log("array", files);
 
     const formData = new FormData();
     files.forEach((file) => {
@@ -122,6 +152,7 @@ export default function Form({ categories }) {
 
       const updatedPreviews = [...form.images];
       updatedPreviews.splice(index, 1);
+
       setForm({
         ...form,
         images: updatedPreviews,

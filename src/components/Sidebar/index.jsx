@@ -252,6 +252,32 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 </Link>
               </li>
               {/* <!-- Menu Item Order --> */}
+
+              {/* <!-- Menu Item Image --> */}
+              <li>
+                <Link
+                  href="/image"
+                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes("image") && "bg-graydark dark:bg-meta-4"
+                  }`}
+                >
+                  <svg
+                    className="fill-current"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M21 19V5C21 3.89 20.1 3 19 3H5C3.9 3 3 3.89 3 5V19C3 20.11 3.9 21 5 21H19C20.1 21 21 20.11 21 19ZM5 19V5H19V19H5ZM14.5 10.5C15.33 10.5 16 9.83 16 9C16 8.17 15.33 7.5 14.5 7.5C13.67 7.5 13 8.17 13 9C13 9.83 13.67 10.5 14.5 10.5ZM7.5 17H16.5L12 11L9 15L7.5 13.5L5 17H7.5Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Image
+                </Link>
+              </li>
+              {/* <!-- Menu Item Image --> */}
             </ul>
           </div>
         </nav>

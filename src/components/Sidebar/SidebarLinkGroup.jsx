@@ -2,7 +2,7 @@
 import { ReactNode, useState } from "react";
 
 const SidebarLinkGroup = ({ children, activeCondition }) => {
-  const [open, setOpen] = useState < boolean > activeCondition;
+  const [open, setOpen] = useState(activeCondition);
 
   const handleClick = () => {
     setOpen(!open);
