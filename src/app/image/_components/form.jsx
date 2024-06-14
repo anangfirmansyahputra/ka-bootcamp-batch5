@@ -4,20 +4,38 @@ import axios from "axios";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
+import * as XLSX from "xlsx";
 
 export default function Form() {
   const [images, setImages] = useState([]);
 
   const copyToClipboard = () => {
     if (images) {
-      navigator.clipboard
-        .writeText(images)
-        .then(() => {
-          alert("Copied to clipboard: " + images);
-        })
-        .catch((err) => {
-          console.error("Could not copy text: ", err);
-        });
+      if (images.length > 1) {
+        let data = [];
+
+        const header = ["Image"];
+        data.push(header);
+
+        for (const image of images) {
+          const row = [image];
+          data.push(row);
+        }
+
+        const worksheet = XLSX.utils.aoa_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Images");
+        XLSX.writeFile(workbook, "images.xlsx");
+      } else {
+        navigator.clipboard
+          .writeText(images)
+          .then(() => {
+            alert("Copied to clipboard: " + images);
+          })
+          .catch((err) => {
+            console.error("Could not copy text: ", err);
+          });
+      }
     }
   };
 
@@ -80,7 +98,7 @@ export default function Form() {
                 <button
                   type="button"
                   onClick={copyToClipboard}
-                  className="rounded bg-primary px-3 py-2 hover:bg-primary/90"
+                  className="h-fit rounded bg-primary px-3 py-2 hover:bg-primary/90"
                 >
                   <svg
                     className="fill-white"
@@ -100,7 +118,7 @@ export default function Form() {
                 <button
                   type="button"
                   onClick={copyToClipboard}
-                  className="flex items-center gap-2 rounded bg-primary px-3 py-2 text-white hover:bg-primary/90"
+                  className="flex h-fit items-center gap-2 rounded bg-primary px-3 py-2 text-white hover:bg-primary/90"
                 >
                   Export
                   <svg

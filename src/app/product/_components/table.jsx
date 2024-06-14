@@ -138,7 +138,6 @@ export default function Table({ products }) {
     const findProducts = products.filter((product) =>
       selectedProducts.includes(product.id),
     );
-    console.log("Selected products:", selectedProducts);
     exportToExcel(findProducts);
   };
 
