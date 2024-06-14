@@ -4,17 +4,17 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 
-export default async function UpdateProductPage({params}) {
+export default async function UpdateProductPage({ params }) {
   const categories = await db.category.findMany();
 
   const product = await db.product.findFirst({
     where: {
-        id: params.productId
-    }
-  })
+      id: params.productId,
+    },
+  });
 
   if (!product) {
-    redirect("/product")
+    redirect("/product");
   }
 
   return (

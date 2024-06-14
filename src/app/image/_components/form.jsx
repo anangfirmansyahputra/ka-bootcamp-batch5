@@ -11,7 +11,7 @@ export default function Form() {
 
   // Fungsi copy or export excel
   const copyToClipboard = () => {
-    if (images) {
+    if (images.length > 0) {
       if (images.length > 1) {
         let data = [];
 
@@ -45,6 +45,7 @@ export default function Form() {
     try {
       const files = Array.from(e.target.files);
       const formData = new FormData();
+
       files.forEach((file) => {
         formData.append("files", file);
       });
