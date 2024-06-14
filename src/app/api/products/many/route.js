@@ -14,39 +14,10 @@ export async function POST(request) {
     const worksheet = workbook.Sheets[sheetName];
     const json = XLSX.utils.sheet_to_json(worksheet);
 
-    const processedData = json.map((item) => {
-      const images = [];
-      const colors = [];
-
-      for (const key in item) {
-        if (key.startsWith("Image")) {
-          images.push(item[key]);
-          delete item[key];
-        }
-
-        if (key.startsWith("Color")) {
-          colors.push(item[key]);
-          delete item[key];
-        }
-      }
-
-      if (images.length > 0) {
-        item.images = images;
-      }
-
-      if (colors.length > 0) {
-        item.colors = colors;
-      }
-
-      return item;
-    });
-
     const transactions = await db.$transaction(async (ctx) => {
       try {
         let products = [];
-        for (const data of processedData) {
-          console.log(data);
-
+        for (const data of json) {
           const category = await ctx.category.findFirst({
             where: {
               name: data.Category,
@@ -58,6 +29,9 @@ export async function POST(request) {
             error.status = 404;
           }
 
+          const colors = data.Colors.split(",");
+          const images = data.Images.split(",");
+
           const product = await ctx.product.create({
             data: {
               title: data.Title,
@@ -67,8 +41,8 @@ export async function POST(request) {
               company: data.Company,
               stock: data.Stock,
               shipping: data.Shipping === "Yes" ? true : false,
-              colors: data.colors,
-              images: data.images,
+              colors,
+              images,
             },
           });
 
@@ -113,38 +87,10 @@ export async function PATCH(request) {
     const worksheet = workbook.Sheets[sheetName];
     const json = XLSX.utils.sheet_to_json(worksheet);
 
-    const processedData = json.map((item) => {
-      const images = [];
-      const colors = [];
-      for (const key in item) {
-        if (key.startsWith("Image")) {
-          images.push(item[key]);
-          delete item[key];
-        }
-
-        if (key.startsWith("Color")) {
-          colors.push(item[key]);
-          delete item[key];
-        }
-      }
-
-      if (images.length > 0) {
-        item.images = images;
-      }
-
-      if (colors.length > 0) {
-        item.colors = colors;
-      }
-
-      return item;
-    });
-
     const transactions = await db.$transaction(async (ctx) => {
       try {
         let products = [];
-        for (const data of processedData) {
-          console.log(data);
-
+        for (const data of json) {
           const category = await ctx.category.findFirst({
             where: {
               name: data.Category,
@@ -155,6 +101,9 @@ export async function PATCH(request) {
             const error = new Error("Category not found");
             error.status = 404;
           }
+
+          const colors = data.Colors.split(",");
+          const images = data.Images.split(",");
 
           const product = await ctx.product.update({
             where: {
@@ -168,8 +117,8 @@ export async function PATCH(request) {
               company: data.Company,
               stock: data.Stock,
               shipping: data.Shipping === "Yes" ? true : false,
-              colors: data.colors,
-              images: data.images,
+              colors,
+              images,
             },
           });
 

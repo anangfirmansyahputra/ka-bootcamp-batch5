@@ -45,7 +45,7 @@ export default function Table({ products }) {
     }
   };
 
-  const handleExcel = async (event) => {
+  const handleAddBulk = async (event) => {
     try {
       const file = event.target.files?.[0];
       if (!file) return;
@@ -80,30 +80,18 @@ export default function Table({ products }) {
 
   const exportToExcel = (products) => {
     const data = [];
-    let maxColors = 0;
-    let maxImages = 0;
-
-    // Tentukan jumlah maksimum colors dan images
-    products.forEach((product) => {
-      if (product.colors.length > maxColors) maxColors = product.colors.length;
-      if (product.images.length > maxImages) maxImages = product.images.length;
-    });
 
     // Buat header secara dinamis
     const header = [
       "Id",
       "Title",
       "Price",
-      "Stock",
       "Category",
-      "Company",
+      "Stock",
       "Shipping",
-      ...Array(maxColors)
-        .fill()
-        .map((_, i) => `Color`),
-      ...Array(maxImages)
-        .fill()
-        .map((_, i) => `Image`),
+      "Company",
+      "Colors",
+      "Images",
     ];
     data.push(header);
 
@@ -113,14 +101,12 @@ export default function Table({ products }) {
         product.id,
         product.title,
         product.price,
-        product.stock,
         product.category.name,
-        product.company,
+        product.stock,
         product.shipping ? "Yes" : "No",
-        ...product.colors,
-        ...Array(maxColors - product.colors.length).fill(""),
-        ...product.images,
-        ...Array(maxImages - product.images.length).fill(""),
+        product.company,
+        product.colors.join(","),
+        product.images.join(","),
       ];
       data.push(row);
     });
@@ -134,7 +120,7 @@ export default function Table({ products }) {
     XLSX.writeFile(workbook, "products.xlsx");
   };
 
-  const handleBulkAction = () => {
+  const handleExport = () => {
     const findProducts = products.filter((product) =>
       selectedProducts.includes(product.id),
     );
@@ -201,7 +187,7 @@ export default function Table({ products }) {
               type="file"
               className="hidden"
               accept=".xls,.xlsx"
-              onChange={handleExcel}
+              onChange={handleAddBulk}
             />
           </label>
           <label className="inline-block cursor-pointer rounded bg-orange-500 px-5 py-2 font-medium text-white transition-all hover:bg-opacity-90">
@@ -220,7 +206,7 @@ export default function Table({ products }) {
             Bulk Delete
           </button>
           <button
-            onClick={handleBulkAction}
+            onClick={handleExport}
             className="inline-block rounded bg-green-500 px-5 py-2 font-medium text-white transition-all hover:bg-opacity-90"
           >
             Export
