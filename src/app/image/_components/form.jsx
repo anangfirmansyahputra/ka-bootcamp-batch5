@@ -9,6 +9,7 @@ import * as XLSX from "xlsx";
 export default function Form() {
   const [images, setImages] = useState([]);
 
+  // Fungsi copy or export excel
   const copyToClipboard = () => {
     if (images) {
       if (images.length > 1) {
@@ -39,6 +40,7 @@ export default function Form() {
     }
   };
 
+  // Fungsi upload images
   const handleImage = async (e) => {
     try {
       const files = Array.from(e.target.files);

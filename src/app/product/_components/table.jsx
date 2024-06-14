@@ -26,7 +26,7 @@ export default function Table({ products }) {
   };
 
   // Buatlah fungsi untuk mendelete product berdasarkan id
-  async function handleDelete(id) {
+  const handleDelete = async (id) => {
     try {
       await axios.delete(`/api/products/${id}`, {
         headers: {
@@ -43,7 +43,7 @@ export default function Table({ products }) {
         icon: "error",
       });
     }
-  }
+  };
 
   const handleExcel = async (event) => {
     try {
@@ -78,7 +78,7 @@ export default function Table({ products }) {
     );
   };
 
-  function exportToExcel(products) {
+  const exportToExcel = (products) => {
     const data = [];
     let maxColors = 0;
     let maxImages = 0;
@@ -132,7 +132,7 @@ export default function Table({ products }) {
 
     // Tulis file ke sistem
     XLSX.writeFile(workbook, "products.xlsx");
-  }
+  };
 
   const handleBulkAction = () => {
     const findProducts = products.filter((product) =>

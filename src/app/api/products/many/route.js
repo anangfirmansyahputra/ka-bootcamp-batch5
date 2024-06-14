@@ -17,6 +17,7 @@ export async function POST(request) {
     const processedData = json.map((item) => {
       const images = [];
       const colors = [];
+
       for (const key in item) {
         if (key.startsWith("Image")) {
           images.push(item[key]);
