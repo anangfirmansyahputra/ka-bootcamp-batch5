@@ -278,32 +278,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 </Link>
               </li>
               {/* <!-- Menu Item Image --> */}
-
-              {/* <!-- Menu Item Laundry --> */}
-              <li>
-                <Link
-                  href="/laundry"
-                  className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("laundry") && "bg-graydark dark:bg-meta-4"
-                  }`}
-                >
-                  <svg
-                    className="fill-current"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3 1.5C2.44772 1.5 2 1.94772 2 2.5V15.5C2 16.0523 2.44772 16.5 3 16.5H15C15.5523 16.5 16 16.0523 16 15.5V2.5C16 1.94772 15.5523 1.5 15 1.5H3ZM3 0H15C16.1046 0 17 0.89543 17 2V16C17 17.1046 16.1046 18 15 18H3C1.89543 18 1 17.1046 1 16V2C1 0.89543 1.89543 0 3 0ZM5.5 3.5C4.94772 3.5 4.5 3.94772 4.5 4.5C4.5 5.05228 4.94772 5.5 5.5 5.5C6.05228 5.5 6.5 5.05228 6.5 4.5C6.5 3.94772 6.05228 3.5 5.5 3.5ZM11.5 3.5C10.9477 3.5 10.5 3.94772 10.5 4.5C10.5 5.05228 10.9477 5.5 11.5 5.5C12.0523 5.5 12.5 5.05228 12.5 4.5C12.5 3.94772 12.0523 3.5 11.5 3.5ZM4 7H14V14H4V7ZM5 8.5V12.5H13V8.5H5Z"
-                      fill=""
-                    />
-                  </svg>
-                  Laundry
-                </Link>
-              </li>
-              {/* <!-- Menu Item Laundry --> */}
             </ul>
           </div>
         </nav>

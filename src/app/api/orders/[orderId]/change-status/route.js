@@ -21,7 +21,7 @@ export async function PATCH(req, { params }) {
         id: orderId,
       },
       data: {
-        status: status,
+        status,
       },
     });
 

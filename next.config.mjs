@@ -10,14 +10,14 @@ const nextConfig = {
           // Allow for specific domains to have access or * for all
           {
             key: "Access-Control-Allow-Origin",
-            value: "*",
+            value: "http://localhost:3001",
             // DOES NOT WORK
             // value: process.env.ALLOWED_ORIGIN,
           },
           // Allows for specific methods accepted
           {
             key: "Access-Control-Allow-Methods",
-            value: "GET, POST, PUT, DELETE, OPTIONS",
+            value: "GET, POST, PUT, DELETE, PATCH, OPTIONS",
           },
           // Allows for specific headers accepted (These are a few standard ones)
           {
@@ -28,6 +28,5 @@ const nextConfig = {
       },
     ];
   },
-  output: "standalone",
 };
 export default nextConfig;
