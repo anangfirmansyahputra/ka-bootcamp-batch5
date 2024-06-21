@@ -17,6 +17,7 @@ export async function POST(request) {
     const transactions = await db.$transaction(async (ctx) => {
       try {
         let products = [];
+
         for (const data of json) {
           const category = await ctx.category.findFirst({
             where: {

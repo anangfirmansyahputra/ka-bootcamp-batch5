@@ -16,6 +16,8 @@ export default function Table({ products }) {
   const router = useRouter();
   const token = Cookies.get("currentUser");
 
+  console.log(products);
+
   const handleSelectAll = () => {
     if (isAllSelected) {
       setSelectedProducts([]);
@@ -47,17 +49,32 @@ export default function Table({ products }) {
 
   const handleAddBulk = async (event) => {
     try {
-      const file = event.target.files?.[0];
-      if (!file) return;
+      setSelectedProducts([]);
+      const file = event.target.files[0];
+      if (!file) {
+        Swal.fire({
+          title: "Error",
+          text: "No files",
+          icon: "error",
+        });
+        return;
+      }
 
       const formData = new FormData();
       formData.append("file", file);
 
-      const { data } = await axios.post(`/api/products/many`, formData, {
+      await axios.post(`/api/products/many`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      Swal.fire({
+        title: "Success",
+        text: "Bulk add success",
+        icon: "success",
+      });
+
       router.refresh();
     } catch (err) {
       console.log(err);
@@ -71,15 +88,15 @@ export default function Table({ products }) {
 
   const handleSelectProduct = (id) => {
     setIsAllSelected(false);
-    setSelectedProducts((prevSelectedProducts) =>
-      prevSelectedProducts.includes(id)
-        ? prevSelectedProducts.filter((productId) => productId !== id)
-        : [...prevSelectedProducts, id],
+    setSelectedProducts(
+      selectedProducts.includes(id)
+        ? selectedProducts.filter((productId) => productId !== id)
+        : [...selectedProducts, id],
     );
   };
 
   const exportToExcel = (products) => {
-    const data = [];
+    let data = [];
 
     // Buat header secara dinamis
     const header = [
@@ -128,8 +145,8 @@ export default function Table({ products }) {
   };
 
   const handleBulkUpdate = async (event) => {
-    setSelectedProducts([]);
     try {
+      setSelectedProducts([]);
       const file = event.target.files?.[0];
       if (!file) return;
 
@@ -141,6 +158,13 @@ export default function Table({ products }) {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      Swal.fire({
+        title: "Success",
+        text: "Bulk update success",
+        icon: "success",
+      });
+
       router.refresh();
     } catch (err) {
       console.log(err);
@@ -154,11 +178,30 @@ export default function Table({ products }) {
 
   const handleBulkDelete = async () => {
     try {
-      await axios.post(`/api/products/delete`, {
-        ids: selectedProducts,
+      const confirm = await Swal.fire({
+        title: "Apakah kamu yakin?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Yes",
+        denyButtonText: `No`,
+        icon: "question",
       });
-      setSelectedProducts([]);
-      router.refresh();
+
+      if (confirm.isConfirmed) {
+        await axios.post(`/api/products/delete`, {
+          ids: selectedProducts,
+        });
+
+        setSelectedProducts([]);
+        setIsAllSelected(false);
+
+        Swal.fire({
+          title: "Success",
+          text: "Bulk delete success",
+          icon: "success",
+        });
+        router.refresh();
+      }
     } catch (err) {
       console.log(err);
       Swal.fire({
@@ -175,12 +218,14 @@ export default function Table({ products }) {
         <h4 className="text-xl font-semibold text-black dark:text-white">
           Products
         </h4>
+
         <div className="space-x-2">
           <Link href="/product/create">
             <button className="inline-block rounded bg-primary px-5 py-2 font-medium text-white transition-all hover:bg-opacity-90">
               Add Product
             </button>
           </Link>
+          {/* Bulk Add */}
           <label className="inline-block cursor-pointer rounded bg-secondary px-5 py-2 font-medium text-white transition-all hover:bg-opacity-90">
             Bulk Add
             <input

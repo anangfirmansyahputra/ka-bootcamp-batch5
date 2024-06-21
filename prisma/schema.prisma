@@ -74,6 +74,8 @@ model Order {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  status OrderStatus @default(PACKING)
+
   user        User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   order_items OrderItems[]
 
@@ -99,4 +101,11 @@ model OrderItems {
 enum UserRole {
   ADMIN
   CUSTOMER
+  MANAGER
+}
+
+enum OrderStatus {
+  PACKING
+  ONGOING
+  DELIVERED
 }

@@ -12,6 +12,22 @@ export async function POST(request) {
 
     const decoded = jwt.verify(token, process.env.JWT_ACCESS_KEY);
 
+    const user = await db.user.findFirst({
+      where: {
+        id: decoded.id,
+      },
+    });
+
+    if (!user) {
+      return new NextResponse("User not found", { status: 404 });
+    }
+
+    if (user.role !== "ADMIN") {
+      return new NextResponse("This account is not ADMIN", {
+        status: 401,
+      });
+    }
+
     // Tangkap nilai di body
     const body = await request.json();
 
@@ -58,7 +74,7 @@ export async function GET(request) {
     });
   } catch (err) {
     console.log(err);
-    return new NextResponse("Internal Server Error", {
+    return new NextResponse(err?.message || "Internal Server Error", {
       status: 500,
     });
   }

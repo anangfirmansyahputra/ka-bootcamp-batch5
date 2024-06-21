@@ -16,6 +16,8 @@ export default async function CategoryPage() {
     },
   });
 
+  console.log(categories);
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Category" />

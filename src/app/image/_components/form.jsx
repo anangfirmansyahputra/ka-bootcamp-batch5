@@ -13,7 +13,7 @@ export default function Form() {
   const copyToClipboard = () => {
     if (images.length > 0) {
       if (images.length > 1) {
-        let data = [];
+        let data = [["Images"], ["filename1.png"], ["filename2.png"]];
 
         const header = ["Image"];
         data.push(header);

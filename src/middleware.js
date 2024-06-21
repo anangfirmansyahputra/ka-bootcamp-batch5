@@ -1,25 +1,25 @@
 import { NextResponse } from "next/server";
 
 export function middleware(req) {
-  // if (req.nextUrl.pathname.startsWith("/api/")) {
-  //   const response = NextResponse.next();
+  if (req.nextUrl.pathname.startsWith("/api/")) {
+    const response = NextResponse.next();
 
-  //   response.headers.set("Access-Control-Allow-Origin", "*");
-  //   response.headers.set(
-  //     "Access-Control-Allow-Methods",
-  //     "GET, POST, PUT, DELETE, OPTIONS",
-  //   );
-  //   response.headers.set(
-  //     "Access-Control-Allow-Headers",
-  //     "Content-Type, Authorization",
-  //   );
+    response.headers.set("Access-Control-Allow-Origin", "*");
+    response.headers.set(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS",
+    );
+    response.headers.set(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization",
+    );
 
-  //   if (req.method === "OPTIONS") {
-  //     return new NextResponse(null, { status: 204 });
-  //   }
+    if (req.method === "OPTIONS") {
+      return new NextResponse(null, { status: 204 });
+    }
 
-  //   return response;
-  // }
+    return response;
+  }
 
   const currentUser = req.cookies.get("currentUser")?.value;
 
@@ -37,6 +37,6 @@ export const config = {
     "/category/:path*",
     "/product/:path*",
     "/order/:path*",
-    // "/api/:path*",
+    "/api/:path*",
   ],
 };
