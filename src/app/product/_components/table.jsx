@@ -3,11 +3,40 @@
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
+
+const CustomImage = ({ filename }) => {
+  const [image, setImage] = useState();
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const res = await axios.get(`/api/images/${filename}`);
+  //     console.log(res);
+
+  //     // setImage(data);
+  //   })();
+  // }, []);
+
+  // console.log(image);
+
+  if (image !== null) {
+    return (
+      <Image
+        // src={`data:image/jpeg;base64,${Buffer?.from(image?.data?.fileblob).toString("base64")}`}
+        src={`/api/images/${filename}`}
+        width={60}
+        height={50}
+        alt="Product"
+      />
+    );
+  } else {
+    return <div>Not Found</div>;
+  }
+};
 
 export default function Table({ products }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,8 +44,6 @@ export default function Table({ products }) {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const router = useRouter();
   const token = Cookies.get("currentUser");
-
-  console.log(products);
 
   const handleSelectAll = () => {
     if (isAllSelected) {
@@ -301,19 +328,20 @@ export default function Table({ products }) {
           <div className="col-span-1 flex items-center">
             <input
               type="checkbox"
-              checked={selectedProducts.includes(product.id)}
+              checked={selectedProducts.includes(product.id) ? true : false}
               onChange={() => handleSelectProduct(product.id)}
             />
           </div>
           <div className="col-span-2 flex items-center">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <div className="h-12.5 w-15 overflow-hidden rounded-md">
-                <Image
+                {/* <Image
                   src={`/uploads/${product.images[0]}`}
                   width={60}
                   height={50}
                   alt="Product"
-                />
+                /> */}
+                <CustomImage filename={product.images[0]} />
               </div>
               <p className="text-sm text-black dark:text-white">
                 {product.title}

@@ -3,7 +3,7 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import path from "path";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+// import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 export async function GET(req, { params }) {
   try {

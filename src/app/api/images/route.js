@@ -1,5 +1,4 @@
-import { writeFile } from "fs/promises";
-import path from "path";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export const POST = async (req, res) => {
@@ -16,13 +15,18 @@ export const POST = async (req, res) => {
     for (const file of files) {
       const buffer = Buffer.from(await file.arrayBuffer());
       const filename = Date.now() + file.name.replaceAll(" ", "_");
-      await writeFile(
-        path.join(process.cwd(), "public/uploads/" + filename),
-        buffer,
-      );
 
-      images.push(filename);
+      // Simpan file sebagai blob di database menggunakan Prisma
+      const savedFile = await db.file.create({
+        data: {
+          filename: filename,
+          fileblob: buffer,
+        },
+      });
+
+      images.push(savedFile.filename);
     }
+
     return NextResponse.json({
       data: images,
     });

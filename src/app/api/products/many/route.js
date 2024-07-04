@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { PrismaClientValidationError } from "@prisma/client/runtime/library";
+// import { PrismaClientValidationError } from "@prisma/client/runtime/library";
 import { NextResponse } from "next/server";
 import * as XLSX from "xlsx";
 
@@ -69,11 +69,11 @@ export async function POST(request) {
     );
   } catch (err) {
     console.error(err);
-    if (err instanceof PrismaClientValidationError) {
-      return new NextResponse("Data from excel is invalid", { status: 400 });
-    } else {
-      return new NextResponse("Internal Server Error", { status: 500 });
-    }
+    // if (err instanceof PrismaClientValidationError) {
+    //   return new NextResponse("Data from excel is invalid", { status: 400 });
+    // } else {
+    return new NextResponse("Internal Server Error", { status: 500 });
+    // }
   }
 }
 
@@ -145,10 +145,10 @@ export async function PATCH(request) {
     );
   } catch (err) {
     console.log(err);
-    if (err instanceof PrismaClientValidationError) {
-      return new NextResponse("Data from excel is invalid", { status: 400 });
-    } else {
-      return new NextResponse("Internal Server Error", { status: 500 });
-    }
+    // if (err instanceof PrismaClientValidationError) {
+    //   return new NextResponse("Data from excel is invalid", { status: 400 });
+    // } else {
+    return new NextResponse("Internal Server Error", { status: 500 });
+    // }
   }
 }

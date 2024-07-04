@@ -1,4 +1,4 @@
-import { compareSync } from "bcrypt";
+import { compareSync } from "bcryptjs";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";

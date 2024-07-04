@@ -25,8 +25,6 @@ export default async function OrderIdPage({ params, searchParams }) {
     },
   });
 
-  console.log(order);
-
   return (
     <DefaultLayout>
       <Breadcrumb pageName={"Order Detail"} />

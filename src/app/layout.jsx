@@ -1,7 +1,7 @@
 import "@/css/satoshi.css";
 import "@/css/style.css";
 import "flatpickr/dist/flatpickr.min.css";
-import "jsvectormap/dist/css/jsvectormap.css";
+// import "jsvectormap/dist/css/jsvectormap.css";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
