@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "jest --passWithNoTests -u"
   },
   "dependencies": {
     "@prisma/client": "^5.15.1",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "flatpickr": "^4.6.13",
+    "jest": "^29.7.0",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "jsvectormap": "^1.5.3",
