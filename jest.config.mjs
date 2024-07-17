@@ -7,7 +7,7 @@ const createJestConfig = nextJest({
 /**@type {import('jest').Config} */
 const config = {
   modulePaths: ["<rootDir>/src"],
-  collectCoverage: true,
+  // collectCoverage: true,
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
     "!**/*.d.ts",
