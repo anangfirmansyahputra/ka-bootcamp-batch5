@@ -19,7 +19,6 @@
     "flatpickr": "^4.6.13",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "jest-mock-extended": "2.0.4",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "jsvectormap": "^1.5.3",
