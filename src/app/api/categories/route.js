@@ -65,7 +65,6 @@ export async function GET(request) {
   try {
     // Get all categories
     const categories = await db.category.findMany();
-    console.log(categories);
 
     return NextResponse.json({
       data: categories,
