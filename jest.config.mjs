@@ -7,7 +7,6 @@ const createJestConfig = nextJest({
 /**@type {import('jest').Config} */
 const config = {
   modulePaths: ["<rootDir>/src"],
-  // collectCoverage: true,
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
     "!**/*.d.ts",
@@ -18,6 +17,9 @@ const config = {
     "!<rootDir>/*.config.js",
   ],
   testEnvironment: "jest-environment-jsdom",
+  moduleNameMapper: {
+    "^@/(.*)$": `<rootDir>/src/$1`,
+  },
 };
 
 export default createJestConfig(config);

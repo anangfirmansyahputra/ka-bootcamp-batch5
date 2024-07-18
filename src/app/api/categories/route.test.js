@@ -3,66 +3,117 @@
  */
 
 import { matchers } from "jest-json-schema";
-import { GET } from "./route";
+import { GET, POST } from "./route";
+import { db } from "../../../lib/db";
+import jwt from "jsonwebtoken";
 expect.extend(matchers);
 
-const db = {
-  user: {
-    findFirst: jest.fn(),
+jest.mock("@/lib/db", () => ({
+  db: {
+    user: {
+      findFirst: jest.fn(),
+    },
+    category: {
+      create: jest.fn(),
+    },
   },
-  category: {
-    create: jest.fn(),
-    findMany: jest.fn(),
-  },
-};
+}));
 
-describe("API Categories", () => {
+jest.mock("jsonwebtoken", () => {
+  const originalModule = jest.requireActual("jsonwebtoken");
+
+  return {
+    ...originalModule,
+    verify: jest.fn(),
+  };
+});
+
+describe("Route Categories", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
-  it("should return data with status 200", async () => {
-    // Mock data to be returned by findMany
-    const mockCategories = [
-      {
+  describe("POST", () => {
+    it("should return status 401 ", async () => {
+      const requestWithoutToken = {
+        headers: {
+          get: jest.fn().mockReturnValue(null),
+        },
+      };
+      const response = await POST(requestWithoutToken);
+
+      expect(response.status).toBe(401);
+      expect(await response.text()).toBe("Token not provided");
+    });
+
+    it("should return status 404 when user not found", async () => {
+      jwt.verify.mockReturnValue({ userId: 1 }); // Mock user ID
+      const request = {
+        headers: {
+          get: jest.fn().mockReturnValue("mock-token"),
+        },
+        json: jest.fn(),
+      };
+
+      db.user.findFirst.mockResolvedValue(null);
+
+      const response = await POST(request);
+
+      expect(response.status).toBe(404);
+      expect(await response.text()).toBe("User not found");
+    });
+
+    it("should return status 401 when user not admin", async () => {
+      jwt.verify.mockReturnValue({ userId: 1 });
+      const request = {
+        headers: {
+          get: jest.fn().mockReturnValue("mock-token"),
+        },
+        json: jest.fn(),
+      };
+
+      db.user.findFirst.mockResolvedValue({
+        id: 1,
+        name: "Not Admin",
+        role: "USER",
+      });
+
+      const response = await POST(request);
+
+      expect(response.status).toBe(401);
+      expect(await response.text()).toBe("This account is not ADMIN");
+    });
+
+    it("should return status 201 when category created", async () => {
+      jwt.verify.mockReturnValue({ userId: 1 });
+      const request = {
+        headers: {
+          get: jest.fn().mockReturnValue("mock-token"),
+        },
+        json: jest.fn().mockReturnValue({
+          name: "Category 1",
+        }),
+      };
+
+      db.user.findFirst.mockResolvedValue({
+        id: "1",
+        name: "Admin",
+        role: "ADMIN",
+      });
+
+      db.category.create.mockResolvedValue({
         id: "1",
         name: "Category 1",
         created_at: new Date().toISOString(),
-      },
-      {
-        id: "2",
-        name: "Category 2",
-        created_at: new Date().toISOString(),
-      },
-    ];
+      });
 
-    // Mock the response from findMany
-    db.category.findMany.mockResolvedValue(mockCategories);
+      const response = await POST(request);
+      const body = await response.json();
 
-    // Mock request and response objects
-    const request = {};
-    const response = {
-      status: jest.fn().mockReturnValue(200), // Mock status method to return 200
-      json: jest.fn().mockResolvedValue({
-        data: mockCategories,
-        success: true,
-        message: "Get all categories",
-      }), // Mock json method to resolve with mockCategories
-    };
-
-    // Call GET function with mocked request and response
-    await GET(request, response);
-
-    // Check the response body
-    const body = await response.json(); // Get the JSON body from the mocked response
-
-    // Define schema for response body
-    const schema = {
-      type: "object",
-      properties: {
-        data: {
-          type: "array",
-          items: {
+      const schema = {
+        type: "object",
+        properties: {
+          data: {
             type: "object",
             properties: {
               id: { type: "string" },
@@ -72,14 +123,10 @@ describe("API Categories", () => {
             required: ["id", "name", "created_at"],
           },
         },
-        message: { type: "string" },
-      },
-      required: ["data", "message"],
-    };
+      };
 
-    // Assertions
-    expect(response.status()).toBe(200); // Assert against status() method
-    expect(body).toMatchSchema(schema);
-    expect(body.data).toEqual(mockCategories); // Ensure body.data matches mocked categories
+      expect(response.status).toBe(201);
+      expect(body).toMatchSchema(schema);
+    });
   });
 });
