@@ -30,6 +30,8 @@ export default async function Home() {
     totalSold += totalQuantity;
   }
 
+  console.log();
+
   const dashboardData = [
     {
       id: 1,
