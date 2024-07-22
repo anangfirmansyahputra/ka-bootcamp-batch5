@@ -439,7 +439,7 @@ export default function Form({ data, categories }) {
           <div key={i} className="relative aspect-square rounded-md bg-white">
             <Image
               fill
-              src={`/uploads/${image}`}
+              src={`/api/images/${image}`}
               alt="Preview"
               className="rounded-md object-cover"
             />
