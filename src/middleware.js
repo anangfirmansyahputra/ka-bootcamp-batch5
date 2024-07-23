@@ -4,10 +4,7 @@ export function middleware(req) {
   if (req.nextUrl.pathname.startsWith("/api/")) {
     const response = NextResponse.next();
 
-    response.headers.set(
-      "Access-Control-Allow-Origin",
-      "http://localhost:3001",
-    );
+    response.headers.set("Access-Control-Allow-Origin", "*");
     response.headers.set(
       "Access-Control-Allow-Methods",
       "GET, POST, PUT, DELETE, PATCH, OPTIONS",
