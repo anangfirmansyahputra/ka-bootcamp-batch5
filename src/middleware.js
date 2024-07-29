@@ -1,6 +1,7 @@
+import axios from "axios";
 import { NextResponse } from "next/server";
 
-export function middleware(req) {
+export async function middleware(req) {
   if (req.nextUrl.pathname.startsWith("/api/")) {
     const response = NextResponse.next();
 

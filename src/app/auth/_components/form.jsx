@@ -17,8 +17,6 @@ export default function Form() {
     password: password || "",
   });
 
-  useEffect(() => {}, []);
-
   async function handleSubmit(event) {
     event.preventDefault();
 
