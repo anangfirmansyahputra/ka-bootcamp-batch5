@@ -15,6 +15,7 @@ jest.mock("@/lib/db", () => ({
     },
     category: {
       create: jest.fn(),
+      findMany: jest.fn(),
     },
   },
 }));
@@ -127,6 +128,29 @@ describe("Route Categories", () => {
 
       expect(response.status).toBe(201);
       expect(body).toMatchSchema(schema);
+    });
+  });
+
+  describe("GET", () => {
+    it("should return category with statut 200", async () => {
+      const categories = [
+        {
+          id: "1",
+          name: "Category 1",
+          created_at: "2024-07-23T06:20:47.618Z",
+        },
+      ];
+
+      db.category.findMany.mockResolvedValue(categories);
+
+      const response = await GET();
+      const body = await response.json();
+      expect(response.status).toBe(200);
+      expect(body).toEqual({
+        data: categories,
+        success: true,
+        message: "Get all categories",
+      });
     });
   });
 });

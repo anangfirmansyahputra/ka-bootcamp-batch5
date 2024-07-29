@@ -19,7 +19,7 @@ export default async function ProductPage() {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Product" />
-      <Table products={products}  />
+      <Table products={products} />
     </DefaultLayout>
   );
 }
