@@ -26,7 +26,6 @@ const CustomImage = ({ filename }) => {
   if (image !== null) {
     return (
       <Image
-        // src={`data:image/jpeg;base64,${Buffer?.from(image?.data?.fileblob).toString("base64")}`}
         src={`/api/images/${filename}`}
         width={60}
         height={50}
