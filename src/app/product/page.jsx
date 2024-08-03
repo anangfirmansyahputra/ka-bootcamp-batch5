@@ -9,6 +9,8 @@ export const metadata = {
   description: "This is Next.js Home for TailAdmin Dashboard Template",
 };
 
+export const revalidate = 60;
+
 export default async function ProductPage() {
   const products = await db.product.findMany({
     include: {
