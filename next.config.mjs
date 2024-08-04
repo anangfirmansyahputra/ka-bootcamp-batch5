@@ -29,7 +29,12 @@ const nextConfig = {
     ];
   },
   images: {
-    domains: ["ka-bootcamp-batch5.vercel.app"],
+    remotePatterns: [
+      {
+        protocol: process.env.PROTOCOL,
+        hostname: process.env.HOSTNAME,
+      },
+    ],
   },
 };
 export default nextConfig;

@@ -334,13 +334,12 @@ export default function Table({ products }) {
           <div className="col-span-2 flex items-center">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <div className="h-12.5 w-15 overflow-hidden rounded-md">
-                {/* <Image
-                  src={`/uploads/${product.images[0]}`}
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_API_URL_IMG}/${product.images[0]}`}
                   width={60}
                   height={50}
                   alt="Product"
-                /> */}
-                <CustomImage filename={product.images[0]} />
+                />
               </div>
               <p className="text-sm text-black dark:text-white">
                 {product.title}
